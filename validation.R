@@ -31,9 +31,16 @@ ds <- cbind(ifs[1:nrow(apa_if), ], apa_if)
 names(ds)[1] <- "journal"
 names(ds)[5] <- "issn2"
 
+# process data
+ds$if_2023 <- as.numeric(ds$if_2023)
+
 # check
 ds$eissn == ds$issn2
 
 ### analyze data
 ggplot(ds, aes(x = if_2023, y = jif, label = journal)) + geom_point() + theme_bw() +
-  xlab("Impact Factor reported by APA") + ylab("Impact Factor computed via Crossref")
+  xlab("Impact Factor reported by APA") + ylab("Impact Factor computed via Crossref") +
+  geom_abline(intercept = 0, slope = 1) + coord_flip()
+ggsave("jifcrosreff.jpg")
+
+cor(ds$if_2023, ds$jif)
